@@ -15,6 +15,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private GameObject _tripleShotPrefab;
+    [SerializeField]
+    private bool _isTripleShotActive = false;
+    [SerializeField]
+    private float _speedBoost = 8.5f;
+    [SerializeField]
+    private bool _isSpeedBoostActive = false;
+    [SerializeField]
+    private bool _isShieldActive = false;
+    [SerializeField]
+    private GameObject _shieldVisualizer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +65,15 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-        transform.Translate(direction * _speed * Time.deltaTime);
+        if (_isSpeedBoostActive == false)
+        {
+            transform.Translate(direction * _speed * Time.deltaTime);
+        }
+        else if (_isSpeedBoostActive == true)
+        {
+            transform.Translate(direction * _speedBoost * Time.deltaTime);
+        }
+
 
 
 
@@ -68,20 +89,66 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-        Debug.Log("Space Key Pressed");
-        Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+
+        if (_isTripleShotActive == true)
+        {
+
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+
+            //Debug.Log("Space Key Pressed");
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+        }
+
     }
 
     public void Damage()
     {
+        if (_isShieldActive == true)
+        {
+            _isShieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            return;
+
+        }
         _lives -= 1;
 
-        if (_lives == 0)
+        if (_lives <= 0)
         {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
-
         }
     }
+
+    public void TripleShotActive()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSecondsRealtime(5.0f);
+        _isTripleShotActive = false;
+    }
+    public void SpeedBoostActive()
+    {
+        _isSpeedBoostActive = true;
+        StartCoroutine(SpeedBoostRoutine());
+    }
+
+    IEnumerator SpeedBoostRoutine()
+    {
+        yield return new WaitForSecondsRealtime(5.0f);
+        _isSpeedBoostActive = false;
+    }
+    public void ShieldsActive()
+    {
+        _isShieldActive = true;
+        _shieldVisualizer.SetActive(true);
+    }
+
 
 }
