@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
+    private float _speedBoostedWithShift = 10.5f;
+    [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private float _fireRate = 0.5f;
@@ -38,7 +40,8 @@ public class Player : MonoBehaviour
     private AudioClip _laserSound;
     [SerializeField]
     private AudioSource _audioSource;
-
+    [SerializeField]
+    private bool _isLeftShiftKeyPressed = false;
 
 
     // Start is called before the first frame update
@@ -75,6 +78,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _isLeftShiftKeyPressed = true;
+            gameObject.GetComponent<Renderer>().material.color = Color.cyan;
+        }
+
         CalculateMovement();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
@@ -92,15 +101,35 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-        if (_isSpeedBoostActive == false)
+
+        if (_isSpeedBoostActive == false  && _isLeftShiftKeyPressed == false)
         {
             transform.Translate(direction * _speed * Time.deltaTime);
+         
+
         }
-        else if (_isSpeedBoostActive == true)
+        else if (_isSpeedBoostActive == true && _isLeftShiftKeyPressed == false)
         {
             transform.Translate(direction * _speedBoost * Time.deltaTime);
+     
         }
+        else if (_isSpeedBoostActive == false && _isLeftShiftKeyPressed == true)
+        {
+            transform.Translate(direction * _speedBoostedWithShift * Time.deltaTime);
+            
 
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                _isLeftShiftKeyPressed = false;
+                gameObject.GetComponent<Renderer>().material.color = Color.white;
+            }
+
+        }
+        else if (_isSpeedBoostActive == true && _isLeftShiftKeyPressed == true)
+        {
+            transform.Translate(direction * _speedBoost * Time.deltaTime);
+           
+        }
 
 
 
