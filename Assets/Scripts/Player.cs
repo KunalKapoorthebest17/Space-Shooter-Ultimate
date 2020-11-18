@@ -42,6 +42,9 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
     [SerializeField]
     private bool _isLeftShiftKeyPressed = false;
+    [SerializeField]
+    private Camera _myMainCamera;
+    private ShakeBehavior _cameraShake;
 
 
     // Start is called before the first frame update
@@ -69,6 +72,12 @@ public class Player : MonoBehaviour
         else
         {
             _audioSource.clip = _laserSound;
+        }
+        _cameraShake = _myMainCamera.GetComponent<ShakeBehavior>();
+
+        if (_cameraShake == null)
+        {
+            Debug.LogError("Camera is null");
         }
 
     }
@@ -173,10 +182,12 @@ public class Player : MonoBehaviour
         if (_lives == 2)
         {
             _rightEngine.SetActive(true);
+            _cameraShake.TriggerShake();
         }
         if (_lives == 1)
         {
             _leftEngine.SetActive(true);
+            _cameraShake.TriggerShake();
         }
 
         _uiManager.UpdateLives(_lives);
@@ -184,6 +195,7 @@ public class Player : MonoBehaviour
         if (_lives <= 0)
         {
             _spawnManager.OnPlayerDeath();
+
             Destroy(this.gameObject);
         }
     }
