@@ -45,8 +45,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Camera _myMainCamera;
     private ShakeBehavior _cameraShake;
-    
+    [SerializeField]
+    private float _totalAmmoRemaining = 15f;
+    [SerializeField]
+    private float _initialAmmoCount = 15f;
+    private float _ammoRemaining;
+    [SerializeField]
+    private bool _isAmmoActive = false;
+    [SerializeField]
+    private float _laserFired = 0;
+
     private int _numofhits = 0;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -156,19 +167,43 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        if (_isTripleShotActive == true)
+
+        //Debug.Log("Ammo Remaining Value : " + _ammoRemaining);
+
+        if (_laserFired < _initialAmmoCount || _laserFired == _totalAmmoRemaining || _totalAmmoRemaining > 0)
         {
 
-            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
-        }
-        else
-        {
+            if (_isTripleShotActive == true)
+            {
 
-            //Debug.Log("Space Key Pressed");
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+                Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+                _laserFired++;
+                _ammoRemaining = _initialAmmoCount - _laserFired;
+
+
+
+            }
+           
+            else
+            {
+
+                //Debug.Log("Space Key Pressed");
+                Instantiate(_laserPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+
+                _laserFired++;
+
+                _ammoRemaining = _initialAmmoCount - _laserFired;
+
+
+            }
+
+            UpdateAmmo(1);
+            _audioSource.Play();
+
+
         }
-        _audioSource.Play();
     }
+
 
     public void Damage()
     {
@@ -268,7 +303,26 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
 
     }
+    public void UpdateAmmo(float points)
+    {
+        _totalAmmoRemaining = _totalAmmoRemaining - points;
+        if (_isAmmoActive == true)
+        {
+            AmmoActive();
 
+        }
+
+        _uiManager.UpdateAmmo(_totalAmmoRemaining);
+
+    }
+
+    public void AmmoActive()
+    {
+
+        _totalAmmoRemaining = _totalAmmoRemaining + 15f;
+
+        _uiManager.UpdateAmmo(_totalAmmoRemaining);
+    }
 
 
 }
