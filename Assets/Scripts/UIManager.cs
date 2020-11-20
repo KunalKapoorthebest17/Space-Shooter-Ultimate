@@ -49,6 +49,11 @@ public class UIManager : MonoBehaviour
             _gameOverText.gameObject.SetActive(true);
             GameOver();
         }
+        if (currentLives == -1 || currentLives > 3)
+        {
+            return;
+        }
+
     }
     public void UpdateAmmo(float ammoLeft)
     {
@@ -65,6 +70,7 @@ public class UIManager : MonoBehaviour
 
 
     }
+    
 
     IEnumerator GameOverFlickerRoutine()
     {

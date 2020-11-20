@@ -56,7 +56,8 @@ public class Player : MonoBehaviour
     private float _laserFired = 0;
 
     private int _numofhits = 0;
-
+    [SerializeField]
+    private bool _isLifeBoostActive = false;
 
 
     // Start is called before the first frame update
@@ -322,6 +323,40 @@ public class Player : MonoBehaviour
         _totalAmmoRemaining = _totalAmmoRemaining + 15f;
 
         _uiManager.UpdateAmmo(_totalAmmoRemaining);
+    }
+    public void LifeActive()
+    {
+        _isLifeBoostActive = true;
+        if (_lives >= 3)
+        {
+            return;
+        }
+        else if (_lives == 0)
+        {
+            return;
+        }
+        else
+        {
+            _lives += 1;
+            if (_lives == 3)
+            {
+                _leftEngine.SetActive(false);
+                _rightEngine.SetActive(false);
+
+            }else if (_lives == 2)
+            {
+                _leftEngine.SetActive(false);
+                
+
+            }
+            else if (_lives == 1)
+            {
+                _rightEngine.SetActive(false);
+            }
+        }
+
+        _uiManager.UpdateLives(_lives);
+
     }
 
 
