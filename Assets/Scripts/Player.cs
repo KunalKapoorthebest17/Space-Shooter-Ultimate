@@ -45,7 +45,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Camera _myMainCamera;
     private ShakeBehavior _cameraShake;
-
+    
+    private int _numofhits = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -171,14 +172,47 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        _lives -= 1;
         if (_isShieldActive == true)
+            
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            return;
+            _lives += 1;
+            _numofhits += 1;
+
+            if (_numofhits == 1)
+            {
+             
+                
+                _shieldVisualizer.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.green);
+                return;
+
+
+            }
+            else if (_numofhits == 2)
+                {
+           
+                
+                _shieldVisualizer.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.magenta);
+                return;
+
+            }
+            else if (_numofhits == 3)
+            {
+               
+                
+                _isShieldActive = false;
+                _shieldVisualizer.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.white);
+                _shieldVisualizer.SetActive(false);
+                _numofhits = 0;
+                return;
+            }
+            
+           
+            
+            
 
         }
-        _lives -= 1;
+        
         if (_lives == 2)
         {
             _rightEngine.SetActive(true);
@@ -225,6 +259,7 @@ public class Player : MonoBehaviour
     public void ShieldsActive()
     {
         _isShieldActive = true;
+        
         _shieldVisualizer.SetActive(true);
     }
     public void AddScore(int points)
