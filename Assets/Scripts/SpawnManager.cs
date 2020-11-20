@@ -52,7 +52,7 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-10f, 10f), 7f, 0);
-            int randomPowerUp = Random.Range(0, 3);
+            int randomPowerUp = Random.Range(0, 4);
             GameObject newEnemy = Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
             int wait_time = Random.Range(5, 10);
 
