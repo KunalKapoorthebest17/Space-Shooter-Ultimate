@@ -63,6 +63,26 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _heatShotPrefab;
     // Start is called before the first frame update
+
+    [SerializeField]
+    private GameObject _thrustVisualizer;
+    [SerializeField]
+    private Sprite noFillThrustBar;
+    [SerializeField]
+    private Sprite filledThrustBar;
+    [SerializeField]
+    private Sprite eightyPercentThrustBar;
+    [SerializeField]
+    private Sprite sixtyPercentThrustBar;
+    [SerializeField]
+    private Sprite fiftyPercentThrustBar;
+    [SerializeField]
+    private Sprite thirtyPercentThrustBar;
+    [SerializeField]
+    private double thrust = 70;
+    private Vector3 _currentPosition;
+    private bool _isThrustBarEmpty = false;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -157,16 +177,58 @@ public class Player : MonoBehaviour
 
 
 
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.96f, 0), 0);
+        if (_isThrustBarEmpty == false)
+        {
+            transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.96f, 0), 0);
+        }
+
+
+
+        if (_currentPosition != transform.position)
+        {
+            thrust = thrust - 0.57;
+            _currentPosition = transform.position;
+        }
 
         if (transform.position.x >= 11)
             transform.position = new Vector3(-11, transform.position.y, 0);
         else if (transform.position.x <= -11)
             transform.position = new Vector3(11, transform.position.y, 0);
 
+        if (thrust > 80)
+        {
+            _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = filledThrustBar;
+        }
+        else if (thrust > 60)
+        {
+            _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = eightyPercentThrustBar;
+        }
+        else if (thrust > 50)
+        {
+            _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = sixtyPercentThrustBar;
+        }
+        else if (thrust > 30)
+        {
+            _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = fiftyPercentThrustBar;
+        }
+        else if (thrust > 0)
+        {
+            _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = thirtyPercentThrustBar;
+        }
+        else if (thrust <= 0)
+        {
+            _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = noFillThrustBar;
+            _isThrustBarEmpty = true;
+            _speed = 0.4f;
+            StartCoroutine(FillingThrustBar());
+        }
 
     }
-    void FireLaser()
+
+
+
+
+void FireLaser()
     {
         _canFire = Time.time + _fireRate;
 
@@ -379,6 +441,14 @@ public class Player : MonoBehaviour
         _isHeatActive = false;
     }
 
+    IEnumerator FillingThrustBar()
+    {
+        yield return new WaitForSecondsRealtime(1.5f);
+        thrust = 100;
+        _thrustVisualizer.GetComponent<SpriteRenderer>().sprite = filledThrustBar;
+        _isThrustBarEmpty = false;
+        _speed = 3.5f;
 
+    }
 
 }
