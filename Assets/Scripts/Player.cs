@@ -58,8 +58,10 @@ public class Player : MonoBehaviour
     private int _numofhits = 0;
     [SerializeField]
     private bool _isLifeBoostActive = false;
-
-
+    [SerializeField]
+    private bool _isHeatActive = false;
+    [SerializeField]
+    private GameObject _heatShotPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -184,7 +186,13 @@ public class Player : MonoBehaviour
 
 
             }
-           
+            else if (_isHeatActive == true)
+            {
+                Instantiate(_heatShotPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+                _laserFired++;
+                _ammoRemaining = _initialAmmoCount - _laserFired;
+            }
+
             else
             {
 
@@ -358,6 +366,19 @@ public class Player : MonoBehaviour
         _uiManager.UpdateLives(_lives);
 
     }
+    public void HeatActive()
+    {
+        _isHeatActive = true;
+        StartCoroutine(HeatPowerDownRoutine());
+
+    }
+
+    IEnumerator HeatPowerDownRoutine()
+    {
+        yield return new WaitForSecondsRealtime(5.0f);
+        _isHeatActive = false;
+    }
+
 
 
 }

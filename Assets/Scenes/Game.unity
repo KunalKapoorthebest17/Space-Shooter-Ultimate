@@ -279,6 +279,10 @@ MonoBehaviour:
   _initialAmmoCount: 15
   _isAmmoActive: 0
   _laserFired: 0
+  _isLifeBoostActive: 0
+  _isHeatActive: 0
+  _heatShotPrefab: {fileID: 2778621749178048055, guid: 911b5dbbc4adb45aa8bb6610cb09adda,
+    type: 3}
 --- !u!212 &58733639
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -688,6 +692,8 @@ MonoBehaviour:
   - {fileID: 1943639372014498724, guid: bece5cc8a1a9243e59bef447db19bfb3, type: 3}
   - {fileID: 1385011631729665661, guid: 423fffe05dc92462580b2a051194f42a, type: 3}
   - {fileID: 791681172221954786, guid: 53a113d7d792d400a935538f7e2fc53c, type: 3}
+  - {fileID: 2189103261737514080, guid: 34b508c69a5fc487ca2b522fbc314616, type: 3}
+  - {fileID: 7778184678815468632, guid: 42200f0bccec843baaa6b5ed4fd88029, type: 3}
 --- !u!4 &320329986
 Transform:
   m_ObjectHideFlags: 0

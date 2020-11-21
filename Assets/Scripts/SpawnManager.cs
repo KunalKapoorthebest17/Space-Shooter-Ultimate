@@ -52,11 +52,19 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-10f, 10f), 7f, 0);
-            int randomPowerUp = Random.Range(3, 5);
+            int randomPowerUp = Random.Range(0, 6);
             GameObject newEnemy = Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
             int wait_time = Random.Range(5, 10);
-
-            yield return new WaitForSeconds(wait_time);
+            int wait_longer = Random.Range(30, 40);
+            if (randomPowerUp == 5)
+            {
+                yield return new WaitForSeconds(wait_longer);
+            }
+            else
+            {
+                yield return new WaitForSeconds(wait_time);
+            }
+            
         }
 
 

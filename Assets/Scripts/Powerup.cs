@@ -52,6 +52,10 @@ public class Powerup : MonoBehaviour
                     case 4:
                         player.LifeActive();
                         break;
+                    case 5:
+                        player.HeatActive();
+                        break;
+
                     default:
                         Debug.Log("Default");
                         break;
