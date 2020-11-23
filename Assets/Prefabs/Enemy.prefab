@@ -53,6 +53,11 @@ MonoBehaviour:
   _fireRate: 0.5
   _laserPrefab: {fileID: 7617917392915901989, guid: 82b6685a6ab2a479da00cb51f35aec17,
     type: 3}
+  _spawnManager: {fileID: 0}
+  _rotationSpeed: 500
+  target: {fileID: 8623406465273466410}
+  _enemyContainer: {fileID: 3779955822517742317, guid: 7bc28d735166f49e9af9f0516c81341b,
+    type: 3}
 --- !u!212 &7730665582409647683
 SpriteRenderer:
   m_ObjectHideFlags: 0

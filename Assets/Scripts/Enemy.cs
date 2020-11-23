@@ -21,7 +21,21 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private GameObject _laserPrefab;
+   
 
+    float smooth = 5.0f;
+   // float tiltAngle = 60.0f;
+    private float _timeCounter = 0;
+    private float _radius = 180f;
+    [SerializeField]
+    private SpawnManager _spawnManager;
+    [SerializeField]
+    private float _rotationSpeed = 5f;
+    private float _zRotation = 0;
+    public GameObject target;
+    [SerializeField]
+    private GameObject _enemyContainer;
+    private Vector3 _containerPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +61,13 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Animator is null");
         }
+        _spawnManager = GameObject.Find("Spawn Manager").GetComponentInChildren<SpawnManager>();
 
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Spawn Manager is null");
+
+        }
     }
 
     // Update is called once per frame
@@ -62,10 +82,30 @@ public class Enemy : MonoBehaviour
 
     void CalculateMovement()
     {
+
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
+        
         float randomX = Random.Range(-10f, 10f);
+        /* float tiltAroundZ = Mathf.Cos(_timeCounter * Mathf.PI / 180) * _radius;
+         float tiltAroundX = Mathf.Sin(_timeCounter * Mathf.PI / 180) * _radius;
+         _timeCounter += 1;
+         Quaternion target = Quaternion.Euler(tiltAroundX, 0, tiltAroundZ);
+
+         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);*/
+
+        // _zRotation += Time.deltaTime *_rotationSpeed;
+        // this.transform.rotation = Quaternion.Euler(0, 0, _zRotation);
+        transform.RotateAround(target.transform.position, Vector3.forward, 200 * Time.deltaTime);
+        //transform.Rotate(0, 0, Random.Range(0f, 360f));
+        
+        //transform.Rotate(Vector3.forward, Time.deltaTime * 180, Space.Self);
+       
+
         if (transform.position.y <= -5.5)
             transform.position = new Vector3(randomX, 6.5f, 0);
+        
+        
 
     }
 

@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyContainer;
     private bool _stopSpawning = false;
+    [SerializeField]
+    private float _speed = 2f;
 
     [SerializeField]
     private GameObject[] powerups;
@@ -31,7 +33,8 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //_enemyContainer.GetComponent<Transform>();
+        _enemyContainer.transform.Translate(Vector3.down * _speed * Time.deltaTime);
     }
     IEnumerator SpawnEnemyRoutine()
     {

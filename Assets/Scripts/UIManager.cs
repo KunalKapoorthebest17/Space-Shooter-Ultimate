@@ -43,13 +43,18 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateLives(int currentLives)
     {
-        _livesImage.sprite = _liveSprites[currentLives];
-        if (currentLives == 0)
+        Debug.Log("Current Lives: " + currentLives);
+        if (currentLives > 0 && currentLives <= 3)
+        {
+            _livesImage.sprite = _liveSprites[currentLives];
+        }
+        
+        else if (currentLives == 0 || currentLives < 0)
         {
             _gameOverText.gameObject.SetActive(true);
             GameOver();
         }
-        if (currentLives == -1 || currentLives > 3)
+        else if (currentLives > 3)
         {
             return;
         }
