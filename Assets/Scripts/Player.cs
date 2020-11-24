@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
     private double thrust = 70;
     private Vector3 _currentPosition;
     private bool _isThrustBarEmpty = false;
-
+    private int _totalAmmo = 200;
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -389,8 +389,21 @@ void FireLaser()
 
     public void AmmoActive()
     {
-
-        _totalAmmoRemaining = _totalAmmoRemaining + 15f;
+        if(_totalAmmoRemaining <= _totalAmmo)
+        {
+            if (_totalAmmoRemaining >= 185)
+            {
+                _totalAmmoRemaining = _totalAmmoRemaining + (_totalAmmo - _totalAmmoRemaining);
+                Debug.Log("Total Ammo Remaining: " + _totalAmmoRemaining);
+            }
+            else
+            {
+                _totalAmmoRemaining = _totalAmmoRemaining + 15f;
+                Debug.Log("Total Ammo Remaining: " + _totalAmmoRemaining);
+            }
+        }
+        
+        
 
         _uiManager.UpdateAmmo(_totalAmmoRemaining);
     }

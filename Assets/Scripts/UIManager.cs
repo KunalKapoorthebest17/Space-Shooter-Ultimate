@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         _scoreText.text = "Score : " + 0;
-        _ammoText.text = "Ammo : " + 15;
+        _ammoText.text = "Ammo : " + 15 + " / 200";
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateAmmo(float ammoLeft)
     {
-        _ammoText.text = "Ammo : " + ammoLeft.ToString();
+        _ammoText.text = "Ammo : " + ammoLeft.ToString() + "/ 200"; 
     }
 
     public void GameOver()

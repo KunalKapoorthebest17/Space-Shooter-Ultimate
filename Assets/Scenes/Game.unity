@@ -2263,6 +2263,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Container
       objectReference: {fileID: 0}
+    - target: {fileID: 3779955822517742317, guid: 7bc28d735166f49e9af9f0516c81341b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3779955822517742318, guid: 7bc28d735166f49e9af9f0516c81341b,
         type: 3}
       propertyPath: m_LocalPosition.x
